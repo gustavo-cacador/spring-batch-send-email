@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.lang.Nullable;
+import org.springframework.lang.NonNull;
 
 import javax.sql.DataSource;
 import java.sql.ResultSet;
@@ -36,7 +36,7 @@ public class ReadUsersWithLoansCloseToReturnReaderConfig {
                         from tb_user_book_loan as loan
                         inner join tb_user as user on loan.user_id = user.id
                         inner join tb_book as book on loan.book_id = book.id
-                        where date_add(loan.loan_date, interval ? day) = date(now())
+                        where date_add(loan.loan_date, interval ? day) = '2023-02-04'
                         """)
                 .queryArguments(numDaysToNotifyReturn)
                 .rowMapper(rowMapper())
@@ -45,15 +45,14 @@ public class ReadUsersWithLoansCloseToReturnReaderConfig {
 
     private RowMapper<UserBookLoan> rowMapper() {
         return new RowMapper<UserBookLoan>() {
-            @Nullable
+            @NonNull
             @Override
-            public UserBookLoan mapRow(ResultSet rs, int rowNum) throws SQLException {
+            public UserBookLoan mapRow(@NonNull ResultSet rs, int rowNum) throws SQLException {
                 User user = new User(rs.getInt("user_id"), rs.getString("user_name"), rs.getString("user_email"));
                 Book book = new Book();
                 book.setId(rs.getInt("book_id"));
                 book.setName(rs.getString("book_name"));
-                UserBookLoan userBookLoan = new UserBookLoan(user, book, rs.getDate("loan_date"));
-                return userBookLoan;
+                return new UserBookLoan(user, book, rs.getDate("loan_date"));
             }
         };
     }
