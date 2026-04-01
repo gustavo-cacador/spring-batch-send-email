@@ -1,6 +1,7 @@
 package com.gustavoronchi.send_book_email_spring_batch.processor;
 
 import com.gustavoronchi.send_book_email_spring_batch.domain.UserBookLoan;
+import com.gustavoronchi.send_book_email_spring_batch.util.GenerateBookReturnDate;
 import com.sendgrid.helpers.mail.Mail;
 import com.sendgrid.helpers.mail.objects.Content;
 import com.sendgrid.helpers.mail.objects.Email;
@@ -28,15 +29,13 @@ public class ProcessLoanNotificationEmailProcessorConfig {
             }
 
             private String generateEmailText(UserBookLoan loan) {
-                StringBuilder writer = new StringBuilder();
-                writer.append(String.format("Prezado(a), %s, matricula %d\n", loan.getUser().getName(), loan.getUser().getId()));
-                writer.append(String.format("Informamos que o prazo de devolução do livro %s é amanhã (%s) \n", loan.getBook().getName(), GenerateBookReturnDate.getDate(loan.getLoanDate())));
-                writer.append("Solicitamos que você renove o livro ou devolva, assim que possível.\n");
-                writer.append("A Biblioteca Municipal está funcionando de segunda a sexta, das 9h às 17h.\n\n");
-                writer.append("Atenciosamente,\n");
-                writer.append("Setor de empréstimo e devolução\n");
-                writer.append("BIBLIOTECA MUNICIPAL");
-                return writer.toString();
+                return String.format("Prezado(a), %s, matricula %d\n", loan.getUser().getName(), loan.getUser().getId()) +
+                        String.format("Informamos que o prazo de devolução do livro %s é amanhã (%s) \n", loan.getBook().getName(), GenerateBookReturnDate.getDate(loan.getLoanDate())) +
+                        "Solicitamos que você renove o livro ou devolva, assim que possível.\n" +
+                        "A Biblioteca Municipal está funcionando de segunda a sexta, das 9h às 17h.\n\n" +
+                        "Atenciosamente,\n" +
+                        "Setor de empréstimo e devolução\n" +
+                        "BIBLIOTECA MUNICIPAL";
             }
         };
     }
