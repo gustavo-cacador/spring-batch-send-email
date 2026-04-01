@@ -36,7 +36,7 @@ public class ReadUsersWithLoansCloseToReturnReaderConfig {
                         from tb_user_book_loan as loan
                         inner join tb_user as user on loan.user_id = user.id
                         inner join tb_book as book on loan.book_id = book.id
-                        where date_add(loan.loan_date, interval ? day) = '2023-02-04'
+                        where date_add(loan.loan_date, interval ? day) = date(now())
                         """)
                 .queryArguments(numDaysToNotifyReturn)
                 .rowMapper(rowMapper())
