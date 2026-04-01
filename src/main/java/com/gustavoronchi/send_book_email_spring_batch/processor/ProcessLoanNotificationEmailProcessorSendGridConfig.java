@@ -12,15 +12,15 @@ import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 
 @Configuration
-public class ProcessLoanNotificationEmailProcessorConfig {
+public class ProcessLoanNotificationEmailProcessorSendGridConfig {
 
     @Bean
-    public ItemProcessor<UserBookLoan, Mail> processLoanNotificationEmailProcessor() {
+    public ItemProcessor<UserBookLoan, Mail> processLoanNotificationEmailSendGridProcessor() {
         return new ItemProcessor<UserBookLoan, Mail>() {
             @Nullable
             @Override
             public Mail process(@NonNull UserBookLoan loan) throws Exception {
-                Email from = new Email("gustavoronchi456@gmail.com", "Biblioteca Municipal");
+                Email from = new Email("gustavocacador81@gmail.com", "Biblioteca Municipal");
                 Email to = new Email(loan.getUser().getEmail());
                 Content content = new Content("text/plain", generateEmailText(loan));
                 Mail mail = new Mail(from, "Notificação devolução livro", to, content);

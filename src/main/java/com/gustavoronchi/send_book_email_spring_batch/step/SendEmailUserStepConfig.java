@@ -23,13 +23,13 @@ public class SendEmailUserStepConfig {
 
     @Bean
     public Step sendEmailUserStep(ItemReader<UserBookLoan> readUsersWithLoansCloseToReturnReader,
-                                  ItemProcessor<UserBookLoan, Mail> processLoanNotificationEmailProcessor,
+                                  ItemProcessor<UserBookLoan, Mail> processLoanNotificationEmailSendGridProcessor,
                                   ItemWriter<Mail> sendEmailRequestReturnWriter,
                                   JobRepository jobRepository) {
         return new StepBuilder("sendEmailUserStep", jobRepository)
                 .<UserBookLoan, Mail>chunk(1, transactionManager)
                 .reader(readUsersWithLoansCloseToReturnReader)
-                .processor(processLoanNotificationEmailProcessor)
+                .processor(processLoanNotificationEmailSendGridProcessor)
                 .writer(sendEmailRequestReturnWriter)
                 .build();
     }

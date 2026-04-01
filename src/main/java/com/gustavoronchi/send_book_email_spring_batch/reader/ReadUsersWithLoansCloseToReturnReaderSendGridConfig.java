@@ -17,7 +17,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 @Configuration
-public class ReadUsersWithLoansCloseToReturnReaderConfig {
+public class ReadUsersWithLoansCloseToReturnReaderSendGridConfig {
 
     int numDaysToNotifyReturn = GenerateBookReturnDate.numDaysToReturnBook - 1;
 
@@ -37,7 +37,7 @@ public class ReadUsersWithLoansCloseToReturnReaderConfig {
                         from tb_user_book_loan as loan
                         inner join tb_user as user on loan.user_id = user.id
                         inner join tb_book as book on loan.book_id = book.id
-                        where date_add(loan.loan_date, interval ? day) = date(now())
+                        where date_add(loan.loan_date, interval ? day) = '2023-02-04'
                         """)
                 .queryArguments(numDaysToNotifyReturn)
                 .rowMapper(rowMapper())
